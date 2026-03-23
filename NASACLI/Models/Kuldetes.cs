@@ -29,5 +29,19 @@ namespace NASACLI.Models
             Koltseg = double.Parse(s[6]);
             HasznosTeher = double.Parse(s[7]);
         }
+
+        public string KockazatiSzint()
+        {
+            if (Koltseg > 1 && HasznosTeher > 10000)
+            {
+                return "Magas";
+            }
+            else if (Koltseg > 1 || HasznosTeher > 10000)
+            {
+                return "Közepes";
+            }
+
+            return "Alacsony";
+        }
     }
 }
