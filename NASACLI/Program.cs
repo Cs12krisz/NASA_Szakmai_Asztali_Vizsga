@@ -2,7 +2,7 @@
 
 namespace NASACLI
 {
-    internal class Program
+    public class Program
     {
         public static List<Kuldetes> kuldetesek = new List<Kuldetes>();
         static void Main(string[] args)
