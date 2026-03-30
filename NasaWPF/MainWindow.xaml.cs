@@ -36,8 +36,12 @@ namespace NasaWPF
 
         private void dtgKuldetesek_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            pgbHasznosTeher.Value = (dtgKuldetesek.SelectedItem as Kuldetes).HasznosTeher;
-            lbKivalasztott.Content = (dtgKuldetesek.SelectedItem as Kuldetes).Nev;
+            if (dtgKuldetesek.SelectedIndex != -1)
+            {
+                pgbHasznosTeher.Value = (dtgKuldetesek.SelectedItem as Kuldetes).HasznosTeher;
+                lbKivalasztott.Content = (dtgKuldetesek.SelectedItem as Kuldetes).Nev;
+            }
+
         }
 
         private void btnStatisztika_Click(object sender, RoutedEventArgs e)
@@ -46,25 +50,25 @@ namespace NasaWPF
             int nemEmberesKuldetesekSzama = nemEmberesKuldetesek.Length;
             double nemEmberesKuldetesekAtlagTeher = nemEmberesKuldetesek.Average(k => k.HasznosTeher);
             double nemEmberesKuldetesekAtlagKoltseg = nemEmberesKuldetesek.Average(k => k.Koltseg);
-            var nemEmberesRekord = new
-            {
-                Kategoria = "Nem emberes küldetések",
-                Db = nemEmberesKuldetesekSzama,
-                AtlagTeher = nemEmberesKuldetesekAtlagTeher,
-                AtlagKoltseg = nemEmberesKuldetesekAtlagKoltseg
-            };
+            var nemEmberesRekord = new Statisztika
+            (
+                "Nem emberes küldetések",
+                nemEmberesKuldetesekSzama,
+                nemEmberesKuldetesekAtlagTeher,
+                nemEmberesKuldetesekAtlagKoltseg
+            );
             Kuldetes[] EmberesKuldetesek = Program.kuldetesek.Where(k => k.Legenyseg != 0).ToArray();
             int EmberesKuldetesekSzama = EmberesKuldetesek.Length;
             double EmberesKuldetesekAtlagTeher = EmberesKuldetesek.Average(k => k.HasznosTeher);
             double EmberesKuldetesekAtlagKoltseg = EmberesKuldetesek.Average(k => k.Koltseg);
-            var emberesRekord = new
-            {
-                Kategoria = "Emberes küldetések",
-                Db = EmberesKuldetesekSzama,
-                AtlagTeher = EmberesKuldetesekAtlagTeher,
-                AtlagKoltseg = nemEmberesKuldetesekAtlagKoltseg
-            };
-            dtgKuldetesek.ItemsSource = new List<object>() { emberesRekord, nemEmberesRekord };
+            var emberesRekord = new Statisztika(
+            
+                "Emberes küldetések",
+                EmberesKuldetesekSzama,
+                EmberesKuldetesekAtlagTeher,
+                nemEmberesKuldetesekAtlagKoltseg
+            );
+            dtgKuldetesek.ItemsSource = new List<Statisztika>() { emberesRekord, nemEmberesRekord };
         }
     }
 }
